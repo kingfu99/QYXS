@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--这个文件的作用第连接最底层的数据库-->
+<!--namespace对应的是接口UserDAO相对于java目录的路径-->
+<mapper namespace="com.etc.dao.CategoryDAO">
+    <insert id="add">
+        insert  into  t_category(c_name) values (#{cname})
+    </insert>
+
+    <select id="search" resultType="category">
+        SELECT * FROM t_category
+        <where>
+            <if test="cname!=null">
+                c_name like '%${cname}%'
+            </if>
+        </where>
+    </select>
+
+    <delete id="delete">
+        delete  from  t_category where c_id=#{cid}
+    </delete>
+
+    <select id="searchById" resultType="category">
+        select * from t_category where c_id=#{cid}
+    </select>
+    <update id="update">
+        update t_category
+      <set>
+          <if test="cname!=null">
+              c_name=#{cname}
+          </if>
+          where c_id =#{cid}
+      </set>
+    </update>
+</mapper>

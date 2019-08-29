@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.etc.dao.CustomerDAO">
+    <insert id="add" >
+
+
+	INSERT INTO `qyxs`.`t_customer`(
+
+	 `cus_name`,
+	  `cus_tel`,
+	  `cus_email`,
+	  `cus_add1`,
+	  `cus_add2`,
+	  `cus_po`,
+	  `cus_bz`
+	  )
+VALUES
+	(
+		#{cusName},
+		#{cusTel},
+		#{cusEmail},
+		#{cusAdd1},
+		#{cusAdd2},
+		#{cusPo},
+		#{cusBz}
+	)
+   </insert>
+	<select id="search" resultType="customer">
+		select * from t_customer
+		<where>
+            <if test="title!=null">
+		 cus_name like '%${title}%'
+            </if>
+            <if test="cityid!=null">
+            and  cus_add2 like '%${cityid}%'
+            </if>
+        </where>
+	</select>
+
+	<select id="searchById" resultType="customer">
+    select * from t_customer where cus_id=#{cusId}
+</select>
+
+	<delete id="deleteById" >
+            delete from t_customer where cus_id=#{cusId}
+     </delete>
+
+	<update id="update" parameterType="customer"  >
+	UPDATE `t_customer`
+		<trim prefix="set" suffixOverrides="," suffix="WHERE cus_id = #{cusId}">
+			<if test="cusName!=null">cus_name=#{cusName},</if>
+			<if test="cusTel!=null">cus_tel=#{cusTel},</if>
+			<if test="cusEmail!=null">cus_email=#{cusEmail},</if>
+			<if test="cusAdd1!=null">cus_add1=#{cusAdd1},</if>
+			<if test="cusAdd2!=null">cus_add2=#{cusAdd2},</if>
+			<if test="cusPo!=null">cus_po=#{cusPo},</if>
+		</trim>
+    </update>
+	<!--<update id="update">
+	update t_customer set
+	cus_name= #{cusName},
+	cus_tel= #{cusTel}
+	WHERE
+	cus_id = #{cusId}
+</update>-->
+
+</mapper>

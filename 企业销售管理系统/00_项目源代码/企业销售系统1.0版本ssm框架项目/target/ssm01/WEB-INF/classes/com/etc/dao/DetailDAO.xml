@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.etc.dao.DetailDAO">
+
+
+	<resultMap id="myuser" type="detail">
+		<id property="detId" column="det_id"></id>
+		<result property="gPrice" column="g_price"></result>
+		<result property="detNum" column="det_num"></result>
+		<result property="detMoney" column="det_money"></result>
+		<association property="goods" javaType="goods">
+			<id property="ggId" column="gg_id"></id>
+			<result property="gName" column="g_name"></result>
+			<result property="gGg" column="g_gg"></result>
+		</association>
+		<collection property="order" javaType="order">
+			<id property="oId" column="o_id"></id>
+			<result property="oDate" column="o_date"></result>
+			<association property="customer" javaType="customer">
+				<id property="cusId" column="cus_id"></id>
+				<result property="cusName" column="cus_name"></result>
+			</association>
+		</collection>
+
+	</resultMap>
+
+
+	<select id="searchById" resultMap="myuser" >
+	select *
+	 from t_order o,t_detail d,t_goods g,t_customer c
+	where
+	o.o_id=d.o_id
+and o.o_id=#{OId}
+and g.gg_id=d.gg_id
+and o.cus_id=c.cus_id
+	</select>
+<insert id="fabu">
+	INSERT INTO `t_detail`
+	(  `o_id`, `gg_id`, `det_num`, `det_money`, `g_price` )
+	VALUES
+	( #{order.oId}, #{goods.ggId}, #{detNum}, #{detMoney}, #{gPrice} )
+</insert>
+	<delete id="delete" >
+           delete from t_detail where o_id=#{order.oId}
+     </delete>
+</mapper>

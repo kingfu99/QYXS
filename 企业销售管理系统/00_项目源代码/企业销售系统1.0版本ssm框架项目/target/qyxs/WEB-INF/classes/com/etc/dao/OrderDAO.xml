@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.etc.dao.OrderDAO">
+
+	<resultMap id="myuser" type="order">
+		<id property="oId" column="o_id"></id>
+		<result property="oDate" column="o_date"></result>
+		<association property="customer" javaType="customer">
+			<id property="cusId" column="cus_id"></id>
+			<result property="cusName" column="cus_name"></result>
+		</association>
+	</resultMap>
+
+
+	<select id="search" resultMap="myuser" >
+	select *
+	 from t_order o,t_customer c
+		<where>
+			<if test="orderid!=null">
+		o_id=#{orderid}
+			</if>
+
+			<if test="customer!=null and customer.cusName!=null">
+				and	cus_name like '%${customer.cusName}%'
+			</if>
+
+	and o.cus_id=c.cus_id
+
+		</where>
+	</select>
+
+	<delete id="delete" >
+           delete from t_order where o_id=#{oId}
+     </delete>
+
+	<insert id="add" useGeneratedKeys="true" keyProperty="oId">
+INSERT INTO `t_order` (`o_date`, `cus_id` )
+	VALUES
+	(#{ODate}, #{customer.cusId});
+
+	</insert>
+
+
+	<select id="searchById" resultType="order">
+    select * from t_order where o_id=#{oId}
+</select>
+</mapper>

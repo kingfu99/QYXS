@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.etc.dao.AreaDao">
+    <select id="selectAreaById" parameterType="int" resultType="area">
+        select * from area where a_pid=#{a_pid}
+    </select>
+    <select id="selectAllProvice" resultType="area">
+        select * from area where a_pid=1
+    </select>
+</mapper>

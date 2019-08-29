@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--这个文件的作用第连接最底层的数据库-->
+<!--namespace对应的是接口UserDAO相对于java目录的路径-->
+<mapper namespace="com.etc.dao.GoodsDAO">
+    <resultMap id="goods" type="goods">
+        <id property="gId" column="g_id"></id>
+        <result property="gName" column="g_name"></result>
+        <result property="gPrice" column="g_price"></result>
+        <result property="gImg" column="g_img"></result>
+        <result property="gGg" column="g_gg"></result>
+        <result property="gBz" column="g_bz"></result>
+        <result property="" column=""></result>
+        <association property="category" javaType="com.etc.entity.Category">
+            <id property="cid" column="c_id"></id>
+            <result property="cname" column="c_name"></result>
+        </association>
+    </resultMap>
+    <insert id="fabu">
+        INSERT INTO t_goods(gg_id,g_name,g_price,g_img,g_gg,c_id,g_bz) VALUES(#{ggId},#{gName},#{gPrice},#{gImg},#{gGg},#{category.cid},#{gBz});
+    </insert>
+
+    <select id="search" resultMap="goods">
+        SELECT * FROM t_goods g,t_category c
+        <where>
+            <if test="name!=null">
+                g_name like '%${name}%' and
+            </if>
+             g.c_id=c.c_id
+        </where>
+    </select>
+
+    <delete id="delete">
+        delete  from  t_goods where g_id=#{gid};
+    </delete>
+
+    <select id="searchById" resultType="goods">
+        select * from  t_goods where g_id=#{gid}
+    </select>
+    
+   <update id="update">
+       update `t_goods`
+       <set>
+           <if test="gName!=null">
+               `g_name`=#{gName},
+           </if>
+           <if test="gPrice!=null">
+               `g_price`=#{gPrice},
+           </if>
+           <if test="gImg!=null and gImg!=''">
+               `g_img`=#{gImg},
+           </if>
+           <if test="gGg!=null">
+               `g_gg`=#{gGg},
+           </if>
+           <if test="gBz!=null">
+               `g_bz`=#{gBz}
+           </if>
+           where g_id =#{gId}
+       </set>
+   </update>
+</mapper>
